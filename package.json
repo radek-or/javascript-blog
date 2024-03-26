@@ -8,7 +8,7 @@
 		"init:dirs": "mkdirp css sass vendor images js",
 		"init:files": "touch README.md index.html sass/style.scss js/script.js",
 		"init:gitignore": "curl https://raw.githubusercontent.com/github/gitignore/master/Node.gitignore -o .gitignore",
-		"test": "npm run all test:html",
+		"test": "npm-run-all test:html",
 		"test:html": "html-validate *.html",
 		"build:sass": "sass --style=compressed --no-source-map sass:css",
 		"build:autoprefixer": "postcss css/*.css --use autoprefixer -d css",
