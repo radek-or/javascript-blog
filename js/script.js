@@ -36,7 +36,8 @@ function titleClickHandler(event) {
 const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
-  optArticleTagsSelector = '.post-tags .list';
+  optArticleTagsSelector = '.post-tags .list',
+  optArticleAuthorSelector = '.post p';
 
 function generateTitleLinks(customSelector = '') {
   // console.log("Coś ta funkcja robi");
@@ -48,7 +49,9 @@ function generateTitleLinks(customSelector = '') {
   titleList.innerHTML = '';
   // console.log(titleList);
 
-  const articles = document.querySelectorAll(optArticleSelector + customSelector);
+  const articles = document.querySelectorAll(
+    optArticleSelector + customSelector
+  );
   // console.log(articles);
 
   /* for each article */
@@ -143,7 +146,40 @@ function addClickListenersToTags() {
 
 addClickListenersToTags();
 
+function generateAuthors() {
+  const articles = document.querySelectorAll(optArticleSelector);
+  // console.log(articles);
 
-function generateAuthors(){
-  
+  for (let article of articles) {
+    const authorElement = article.querySelector(optArticleAuthorSelector);
+    const authorName = authorElement.textContent;
+    // console.log(authorElement);
+    // console.log(authorName);
+
+    const authorLinkHtml =
+      "<a href='#" + authorName + "'>" + authorName + '</a>';
+    // console.log(authorLinkHtml);
+
+    authorElement.innerHTML = authorLinkHtml;
+    // console.log(authorLinkHtml);
+  }
 }
+generateAuthors();
+
+// function authorClickHandler() {
+
+//   const clickedElement = this;
+//   const author = document.querySelector(optArticleAuthorSelector).textContent;
+//   console.log(author);
+//   console.log(clickedElement);
+
+// }
+
+// authorClickHandler();
+
+function addClickListenersToAuthors() {
+  const authorLinks = document.querySelectorAll('.post-author a');
+  console.log(authorLinks);
+}
+
+addClickListenersToAuthors();
