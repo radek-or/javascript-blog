@@ -119,20 +119,12 @@ function tagClickHandler(event) {
   const clickedElement = this;
   const href = clickedElement.getAttribute("href");
   const tag = href.replace("#tag-", "");
-
-  // Wygenerowanie niestandardowego selektora dla tagu
   const customSelector = "[data-tags~='" + tag + "']";
-
-  // Wygenerowanie listy artykułów zgodnych z klikniętym tagiem
   generateTitleLinks(customSelector);
-
-  // Usunięcie klasy "active" z wszystkich tagów
   const tagLinks = document.querySelectorAll(".post-tags a");
   for (let tagLink of tagLinks) {
     tagLink.classList.remove("active");
   }
-
-  // Dodanie klasy "active" do klikniętego tagu
   clickedElement.classList.add("active");
   generateTitleLinks("[data-tags~='" + tag + "']");
 }
@@ -149,38 +141,44 @@ addClickListenersToTags();
 
 function generateAuthors() {
   const articles = document.querySelectorAll(optArticleSelector);
-  // console.log(articles);
+  console.log(articles);
 
   for (let article of articles) {
-    const authorElement = article.querySelector(optArticleAuthorSelector);
-    const authorName = authorElement.textContent;
-    // console.log(authorElement);
+    const wrapper = article.querySelector(optArticleAuthorSelector);
+
+    const authorName = article.getAttribute("data-author");
+    // console.log(wrapper);
     // console.log(authorName);
 
     const authorLinkHtml =
-      "<a href='#" + authorName + "'>" + authorName + "</a>";
-    // console.log(authorLinkHtml);
+      "<a href='#' data-author='" + authorName + "'>" + authorName + "</a>";
+    console.log(authorLinkHtml);
 
-    authorElement.innerHTML = authorLinkHtml;
+    wrapper.insertAdjacentHTML("beforeend", authorLinkHtml);
     // console.log(authorLinkHtml);
   }
 }
 generateAuthors();
 
-// function authorClickHandler() {
+function authorClickHandler(event) {
+  event.preventDefault();
+  const clickedElement = this;
+  const dataAuthor = clickedElement.getAttribute("data-author");
+  console.log(dataAuthor);
 
-//   const clickedElement = this;
-//   const author = document.querySelector(optArticleAuthorSelector).textContent;
-//   console.log(author);
-//   console.log(clickedElement);
+  const customSelector = "[data-author='" + dataAuthor + "']";
+  console.log(customSelector);
 
-// }
-
-// authorClickHandler();
+  generateTitleLinks(customSelector);
+  // console.log(generateTitleLinks(customSelector));
+}
 
 function addClickListenersToAuthors() {
   const authorLinks = document.querySelectorAll(".post-author a");
-  console.log(authorLinks);
-}
+  // console.log(authorLinks);
 
+  for (let authorLink of authorLinks) {
+    authorLink.addEventListener("click", authorClickHandler);
+  }
+}
 addClickListenersToAuthors();
