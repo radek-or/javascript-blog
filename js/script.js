@@ -37,7 +37,8 @@ const optArticleSelector = ".post",
   optTitleSelector = ".post-title",
   optTitleListSelector = ".titles",
   optArticleTagsSelector = ".post-tags .list",
-  optArticleAuthorSelector = ".post p";
+  optArticleAuthorSelector = ".post p",
+  optTagsListSelector = ".tags.list";
 
 function generateTitleLinks(customSelector = "") {
   // console.log("Coś ta funkcja robi");
@@ -91,6 +92,8 @@ generateTitleLinks();
 function generateTags() {
   const articles = document.querySelectorAll(optArticleSelector);
   // console.log(articles);
+  /* [NEW] create a new variable allTags with an empty object */
+  let allTags = {};
 
   for (let article of articles) {
     const wrapper = article.querySelector(optArticleTagsSelector);
@@ -107,15 +110,27 @@ function generateTags() {
 
       // console.log(html);
       wrapper.insertAdjacentHTML("beforeend", html);
+      if (!allTags.hasOwnProperty(tag)) {
+        /* [NEW] add generated code to allTags array */
+        allTags[tag] = 1;
+      } else {
+        allTags[tag]++;
+      }
     }
   }
+  const tagList = document.querySelector(optTagsListSelector);
+
+  let allTagsHTML = "";
+  for (let tag in allTags) {
+    allTagsHTML += "<li><a href='#tag-" + tag + "'>" + tag + "</a> (" + allTags[tag] + ") </li>";
+  }
+  tagList.innerHTML = allTagsHTML;
 }
 
 generateTags();
 
 function tagClickHandler(event) {
   event.preventDefault();
-
   const clickedElement = this;
   const href = clickedElement.getAttribute("href");
   const tag = href.replace("#tag-", "");
@@ -141,7 +156,7 @@ addClickListenersToTags();
 
 function generateAuthors() {
   const articles = document.querySelectorAll(optArticleSelector);
-  console.log(articles);
+  // console.log(articles);
 
   for (let article of articles) {
     const wrapper = article.querySelector(optArticleAuthorSelector);
@@ -152,7 +167,7 @@ function generateAuthors() {
 
     const authorLinkHtml =
       "<a href='#' data-author='" + authorName + "'>" + authorName + "</a>";
-    console.log(authorLinkHtml);
+    // console.log(authorLinkHtml);
 
     wrapper.insertAdjacentHTML("beforeend", authorLinkHtml);
     // console.log(authorLinkHtml);
